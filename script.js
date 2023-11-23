@@ -39,9 +39,12 @@ main.html(
 );
 
 // Incrementar contador
-main.find('i').click(({target}) => {
+main.find('i').click((ev) => {
 
+    ev.stopPropagation();
+    
     var
+        {target} = ev,
         {id} = target.closest('.item'),
         {[id]: count} = localStorage,
         isAdd = $(target).html() == 'add';
@@ -53,7 +56,9 @@ main.find('i').click(({target}) => {
     localStorage[id] = count + (isAdd ? 1 : -1);
     update();
     
-})
+});
+
+main.children().click(({currentTarget: ct}) => $(ct).find('i').last().click())
 
 // Actualizar estados
 const update = () => {
